@@ -108,12 +108,12 @@ for /f "tokens=1,3" %%i in ('%ADB% devices -l') do (
     if not "%%i"=="List" (
         set ANDROID_SERIAL=%%i
         for /f "tokens=2 delims=:" %%n in ("%%j") do echo %%n
-        if not "%%j"=="product:elsa_tmo_us" (
-            echo This device doesn't look like a T-mobile V20. Proceed anyway? ^(DANGEROUS!^)
-            goto forcerun
-        )
+        set MODEL=%%j
+        goto modelcheck
     )
 )
+
+:modelcheck
 
 if %ANDROID_SERIAL%=="" (
     echo Failed to find your V20!
@@ -129,15 +129,16 @@ if %ANDROID_SERIAL%=="" (
 
 set ADB=%ADB% -s %ANDROID_SERIAL%
 
-:forcerun
+if not "%MODEL%"=="product:elsa_tmo_us" (
+    echo This device doesn't look like a T-mobile V20. Proceed anyway? ^(DANGEROUS!^)
+    set response=""
+    set /p response=^(Y/N^) %=%
+    if /i "%response%"=="y" goto unlockcheck
+    if /i "%response%"=="n" goto end
+    goto scan
+)
 
-set response=""
-set /p response=^(Y/N^) %=%
-if /i "%response%"=="y" goto check
-if /i "%response%"=="n" goto end
-goto scan
-
-:check
+:unlockcheck
 
 set response=""
 
