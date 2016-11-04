@@ -11,7 +11,7 @@ cls
 
 echo.
 echo ============================================================================================
-echo ==           T-mobile LG V20 ^(H918^) One-Click DirtyCow Installer and Toolkit!           ==
+echo ==            T-mobile LG V20 ^(H918^) One-Click DirtyCow Installer and Toolkit!            ==
 echo ==                        https://github.com/bziemek/EasyRecowvery                        ==
 echo ==----------------------------------------------------------------------------------------==
 echo ==                      Powered by jcadduono's Dirtycow root exploit                      ==
