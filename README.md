@@ -5,7 +5,9 @@ Please see his original thread @ [[H918] recowvery, unlock your V20 root shell -
 ## Disclaimer
 
 WARNING: ATTEMPT AT YOUR OWN RISK! THIS PACKAGE IS RELEASED AS-IS AND WITHOUT ANY WARRANTY, IMPLIED OR EXPRESSED
+
 THIS PACKAGE MAY MAKE YOUR LIFE EASIER (or harder) BUT NOTHING CAN FULLY PROTECT YOU FROM TROUBLE WHEN ROOTING A DEVICE!
+
 IT IS NOT MY RESPONSIBILITY IF YOU END UP WITH A BRICK IN YOUR POCKET AFTER ATTEMPTING ROOT
 
 ## Features
@@ -28,7 +30,10 @@ With this package, you can accomplish the following:
 - Please provide your log files and/or screenshots when reporting issues.
 
 ## Todo & Known Issues
-TODO: fill this out :)
+Host script can't tell if the flash failed. A check for this is under development.
+If ADB crashes or restarts during the process, the host script may fail to complete.
+Some of the latest changes and additions have sloppy output or logging.
+TODO: Remember more of the things.
 
 ## Donations
 PayPal: bezeek@gmail.com
