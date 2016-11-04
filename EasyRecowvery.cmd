@@ -93,7 +93,7 @@ if "%OPTCRYPT%"=="true" (echo optional^)) else (echo forced^))
 if "%NOHASH%"=="--nohash" (echo disabled^)) else (echo enabled^))
 echo 0) Return to main menu
 echo.
-set /p command=^(0-3^) %=%
+set /p command=^(0-5^) %=%
 
 if "%command%"=="0" goto mainmenu
 if "%command%"=="1" (
