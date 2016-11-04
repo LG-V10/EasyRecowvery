@@ -3,6 +3,7 @@ set SRC=%~dp0exploit
 set TARGET=/data/local/tmp
 set ADB=""
 set GETBACKUPS=""
+set NOHASH=
 
 :menu
 
@@ -35,12 +36,11 @@ echo 3) Run exploit and spawn a limited root shell ^(Be careful in there!^)
 echo 4) Flash only ^(For resuming after a successful exploit^)
 echo 5) Download boot and recovery backups from /sdcard/stock_*.img
 echo 6) Restore stock boot and recovery from /sdcard/stock_*.img
-rem TODO: finish integrity verification disabler
-rem <nul set /p= 7) Toggle integrity verification during exploit (currently 
-rem if "%NOHASH%"=="true" (echo disabled^)) else (echo enabled^))
+<nul set /p= 9) Toggle integrity verification during exploit (currently 
+if "%NOHASH%"=="--nohash" (echo disabled^)) else (echo enabled^))
 echo 0) Quit this script
 echo.
-set /p command=^(0-6^) %=%
+set /p command=^(0-9^) %=%
 
 if "%command%"=="1" goto start
 if "%command%"=="2" goto start
@@ -48,8 +48,8 @@ if "%command%"=="3" goto start
 if "%command%"=="4" goto start
 if "%command%"=="5" goto start
 if "%command%"=="6" goto start
-if "%command%"=="7" (
-    if "%NOHASH%"=="true" (set NOHASH=false) else (set NOHASH=true)
+if "%command%"=="9" (
+    if "%NOHASH%"=="--nohash" (set NOHASH="") else (set NOHASH="--nohash")
     goto menu
 )
 if "%command%"=="0" goto end
@@ -195,15 +195,15 @@ if "%command%"=="4" goto flash
 if "%command%"=="6" goto restore
 
 :exploit-normal
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2 %NOHASH%
 goto installedrec
 
 :exploit-permissive
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --permissive && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2 %NOHASH%
 goto installedrec
 
 :exploit-only
@@ -217,7 +217,7 @@ goto getlogs
 
 :restore
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --restore && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --restore %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2
 goto getlogs
 
