@@ -269,6 +269,7 @@ echo.
 echo FAILED!
 echo.
 echo Could not get backup images from /sdcard/. Please copy them manually.
+echo (They may be stuck in /data/local/tmp/recowvery/)
 
 goto end
 
