@@ -275,19 +275,19 @@ goto mainmenu
 
 :exploit-normal
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2 %NOHASH%
 goto installedrec
 
 :exploit-permissive
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --permissive && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 %NOHASH% --permissive && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2 %NOHASH%
 goto installedrec
 
 :exploit-only
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --shell && %ADB% wait-for-device
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --shell %NOHASH% && %ADB% wait-for-device
 goto getlogs
 
 :flash
@@ -307,9 +307,9 @@ set OPTCRYPT=
 goto installedrec
 
 :restore
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --restore %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2 %NOHASH%
 goto getlogs
 
 :installedrec
