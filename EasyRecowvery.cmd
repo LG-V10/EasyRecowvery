@@ -3,14 +3,15 @@ set SRC=%~dp0exploit
 set ZIPS=%~dp0zips
 set TARGET=/data/local/tmp
 set ADB=""
-set GETBACKUPS=""
+set MODE=
+set GETBACKUPS=
 set OPTCRYPT=true
 set NOHASH=
 
-:menu
+:mainmenu
 
 cls
-
+set command=
 echo.
 echo ============================================================================================
 echo ==            T-mobile LG V20 ^(H918^) One-Click DirtyCow Installer and Toolkit!            ==
@@ -35,31 +36,64 @@ echo Please select from the following options:
 echo.
 echo 1) Run exploit and flash /sdcard/recovery.img ^(Leave selinux enforcing^)
 echo 2) Run exploit and flash /sdcard/recovery.img ^(Set selinux permissive^)
-echo 3) Run exploit and spawn a limited root shell ^(Be careful in there!^)
-echo 4) Flash only ^(For resuming after a successful exploit^)
-echo 5) Download boot and recovery backups from /sdcard/stock_*.img
-echo 6) Restore stock boot and recovery from /sdcard/stock_*.img
-<nul set /p= 9) Toggle integrity verification during exploit (currently 
-if "%NOHASH%"=="--nohash" (echo disabled^)) else (echo enabled^))
+echo 4) Restore stock boot and recovery from /sdcard/stock_*.img
+echo 5) Extras and Advanced Tools
 echo 0) Quit this script
 echo.
-set /p command=^(0-9^) %=%
+set /p command=^(0-5^) %=%
 
-if "%command%"=="1" goto start
-if "%command%"=="2" goto start
-if "%command%"=="3" goto start
-if "%command%"=="4" goto start
-if "%command%"=="5" goto start
-if "%command%"=="6" goto start
-if "%command%"=="9" (
-    if "%NOHASH%"=="--nohash" (set NOHASH="") else (set NOHASH="--nohash")
-    goto menu
-)
 if "%command%"=="0" goto end
+if "%command%"=="1" set mode=1 & echo. & echo Running in normal exploit mode & goto start
+if "%command%"=="2" set mode=2 & echo. & echo Running in permissive exploit mode & goto start
+if "%command%"=="3" set mode=5 & echo. & echo Running in SuperSU install mode & goto start
+if "%command%"=="4" set mode=7 & echo. & echo Running in restore mode & goto start
+if "%command%"=="5" goto advmenu
 
-goto menu
+rem TODO: Accept custom zips by checking input against files in \zips\
+
+goto mainmenu
+
+:advmenu
+
+cls
+set command=
+echo.
+echo ============================================================================================
+echo ==                               Extras and Advanced Tools                                ==
+echo ============================================================================================
+echo.
+echo Please select from the following options:
+echo.
+echo 1) Run exploit and spawn a limited root shell ^(Be careful in there!^)
+echo 2) Flash only ^(For resuming after a successful exploit^)
+echo 3) Download boot and recovery backups from /sdcard/stock_*.img
+<nul set /p= 4) Toggle forced encryption after exploit ^(currently 
+if "%OPTCRYPT%"=="true" (echo optional^)) else (echo forced^))
+<nul set /p= 5) Toggle integrity verification during exploit ^(currently 
+if "%NOHASH%"=="--nohash" (echo disabled^)) else (echo enabled^))
+echo 0) Return to main menu
+echo.
+set /p command=^(0-3^) %=%
+
+if "%command%"=="0" goto mainmenu
+if "%command%"=="1" set mode=3 & echo. & echo Running in spawn shell mode & goto start
+if "%command%"=="2" set mode=4 & echo. & echo Running in flash-only mode & goto start
+if "%command%"=="3" set mode=6 & echo. & echo Running in backup download mode & goto start
+if "%command%"=="4" (
+    if "%OPTCRYPT%"=="" (set OPTCRYPT=true) else (set OPTCRYPT=)
+    goto advmenu
+)
+if "%command%"=="5" (
+    if "%NOHASH%"=="--nohash" (set NOHASH=) else (set NOHASH=--nohash)
+    goto advmenu
+)
+
+goto advmenu
 
 :start
+
+pause
+echo Starting in mode %mode% >%~dp0recowvery-exploit.log
 
 echo.
 echo - - - Making sure we're good to go - - -
@@ -67,7 +101,6 @@ echo.
 
 :findzips
 
-echo. >%~dp0recowvery-exploit.log
 set CRYPTZIP=noverity-optcrypt.zip
 for %%i in (%ZIPS%\*crypt*.zip) do (set CRYPTZIP=%%i)
 
@@ -100,7 +133,7 @@ if not exist %ADB% (
     echo FAILED!
     echo.
     echo Could not locate adb.exe. Please ensure that it is installed properly.
-    goto end
+    goto tomenu
 )
 echo SUCCESS!
 echo adb.exe found at "%ADB%" >>%~dp0recowvery-exploit.log
@@ -140,9 +173,9 @@ set ADB=%ADB% -s %ANDROID_SERIAL%
 if not "%MODEL%"=="product:elsa_tmo_us" (
     echo This device doesn't look like a T-mobile V20. Proceed anyway? ^(DANGEROUS!^)
     set response=""
-    set /p response=^(Y/N^) %=%
+    set /p response=^(Y/N^)
+    if /i "%response%"=="n" goto tomenu
     if /i "%response%"=="y" goto unlockcheck
-    if /i "%response%"=="n" goto end
     goto scan
 )
 
@@ -160,14 +193,14 @@ for /f "tokens=1" %%i in ('%ADB% shell getprop ro.boot.flash.locked') do (
         echo fastboot oem unlock
         echo From your computer, then try again.
         echo http://i.imgur.com/2BhNatP.png
-        goto end
+        goto tomenu
     )
 )
 echo SUCCESS!
 echo.
 echo Using device with serial %ANDROID_SERIAL%
 
-if "%COMMAND%"=="5" goto getbackups
+if "%mode%"=="6" goto getbackups
 goto push
 
 :push
@@ -186,7 +219,7 @@ echo Pushing exploit >>%~dp0recowvery-exploit.log
     echo Could not write to /data/local/tmp/.
     echo Please check the directory permsisions and delete
     echo any files or folders named "recowvery" if needed.
-    goto end
+    goto tomenu
 )
 echo SUCCESS!
 
@@ -196,11 +229,13 @@ echo.
 echo - - - Launching Recowvery on device - - -
 echo.
 
-if "%command%"=="1" goto exploit-normal
-if "%command%"=="2" goto exploit-permissive
-if "%command%"=="3" goto exploit-only
-if "%command%"=="4" goto flash
-if "%command%"=="6" goto restore
+echo Mode: %mode%
+
+if "%mode%"=="1" goto exploit-normal
+if "%mode%"=="2" goto exploit-permissive
+if "%mode%"=="3" goto exploit-only
+if "%mode%"=="4" goto flash
+if "%mode%"=="7" goto restore
 
 :exploit-normal
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
@@ -262,7 +297,7 @@ if "%GETBACKUPS%"=="true" goto getbackups
 echo.
 echo - - - SAVED LOGS TO %cd%\recowvery-*.log - - -
 echo.
-goto end
+goto tomenu
 
 :getbackups
 rem Grab any backups taken before the flash
@@ -286,14 +321,14 @@ echo.
         %ADB% shell rm /sdcard/stock_boot.img 2>nul
         %ADB% shell rm /sdcard/stock_boot.img.sha1 2>nul
     )
-    goto end
+    goto tomenu
 )
 echo FAILED!
 echo.
 echo Could not get backup images from /sdcard/. Please copy them manually.
 echo (They may be stuck in /data/local/tmp/recowvery/)
 
-goto end
+goto tomenu
 
 :sendimg
 rem Push a custom recovery to flash at the end of the process
@@ -301,11 +336,13 @@ rem TODO: Dead execution path
 
 %ADB% push %customimg% /sdcard/recovery.img
 
-goto end
+goto tomenu
 
 rem Hi mom
 
-:end
+:tomenu
 
-echo.
 pause
+goto mainmenu
+
+:end
