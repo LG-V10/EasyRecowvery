@@ -43,10 +43,30 @@ echo.
 set /p command=^(0-5^) %=%
 
 if "%command%"=="0" goto end
-if "%command%"=="1" set mode=1 & echo. & echo Running in normal exploit mode & goto start
-if "%command%"=="2" set mode=2 & echo. & echo Running in permissive exploit mode & goto start
-if "%command%"=="3" set mode=5 & echo. & echo Running in SuperSU install mode & goto start
-if "%command%"=="4" set mode=7 & echo. & echo Running in restore mode & goto start
+if "%command%"=="1" (
+    set mode=1
+    echo.
+    echo Running in normal exploit mode
+    goto start
+)
+if "%command%"=="2" (
+    set mode=2
+    echo.
+    echo Running in permissive exploit mode
+    goto start
+)
+if "%command%"=="3" (
+    set mode=5
+    echo.
+    echo Running in SuperSU install mode
+    goto start
+)
+if "%command%"=="4" (
+    set mode=7
+    echo.
+    echo Running in restore mode
+    goto start
+)
 if "%command%"=="5" goto advmenu
 
 rem TODO: Accept custom zips by checking input against files in \zips\
@@ -76,9 +96,24 @@ echo.
 set /p command=^(0-3^) %=%
 
 if "%command%"=="0" goto mainmenu
-if "%command%"=="1" set mode=3 & echo. & echo Running in spawn shell mode & goto start
-if "%command%"=="2" set mode=4 & echo. & echo Running in flash-only mode & goto start
-if "%command%"=="3" set mode=6 & echo. & echo Running in backup download mode & goto start
+if "%command%"=="1" (
+    set mode=3
+    echo.
+    echo Running in spawn shell mode
+    goto start
+)
+if "%command%"=="2" (
+    set mode=4
+    echo.
+    echo Running in flash-only mode
+    goto start
+)
+if "%command%"=="3" (
+    set mode=6
+    echo.
+    echo Running in backup download mode
+    goto start
+)
 if "%command%"=="4" (
     if "%OPTCRYPT%"=="" (set OPTCRYPT=true) else (set OPTCRYPT=)
     goto advmenu
@@ -234,6 +269,9 @@ if "%mode%"=="2" goto exploit-permissive
 if "%mode%"=="3" goto exploit-only
 if "%mode%"=="4" goto flash
 if "%mode%"=="7" goto restore
+
+echo Invalid mode... exiting to main menu.
+goto mainmenu
 
 :exploit-normal
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
