@@ -195,19 +195,19 @@ if "%command%"=="4" goto flash
 if "%command%"=="6" goto restore
 
 :exploit-normal
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device >nul & %ADB% wait-for-device >nul && ^
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 && %ADB% wait-for-device >nul & %ADB% wait-for-device >nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2
 goto installedrec
 
 :exploit-permissive
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device >nul & %ADB% wait-for-device >nul && ^
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --permissive && %ADB% wait-for-device >nul & %ADB% wait-for-device >nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --permissive && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2
 goto installedrec
 
 :exploit-only
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device >nul & %ADB% wait-for-device >nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --shell && %ADB% wait-for-device
 goto getlogs
 
@@ -216,8 +216,8 @@ goto getlogs
 goto getlogs
 
 :restore
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device >nul & %ADB% wait-for-device >nul && ^
-%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --restore && %ADB% wait-for-device >nul & %ADB% wait-for-device >nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
+%ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --restore && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage2
 goto getlogs
 
