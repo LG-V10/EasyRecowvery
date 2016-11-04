@@ -1,8 +1,10 @@
 @echo off
 set SRC=%~dp0exploit
+set ZIPS=%~dp0zips
 set TARGET=/data/local/tmp
 set ADB=""
 set GETBACKUPS=""
+set OPTCRYPT=true
 set NOHASH=
 
 :menu
@@ -22,6 +24,7 @@ echo Pre-flight checklist:
 echo - Install ADB, perferably with the Android SDK provided by Google (https://goo.gl/7ijkjp)
 echo - Unlock your bootloader with "fastboot oem unlock" (see: http://i.imgur.com/2BhNatP.png)
 echo - Enable USB debugging on your device and set this computer to always be allowed to connect
+echo - Place the latest no-verity-opt-encrypt-*.zip in %ZIPS%
 echo - Upload your desired recovery to /sdcard/recovery.img
 echo - Plug in only one device - this script does not support batch operations
 echo - Try to resist the urge to touch your phone, especially when the screen goes all weird
@@ -61,7 +64,12 @@ goto menu
 echo.
 echo - - - Making sure we're good to go - - -
 echo.
+
+:findzips
+
 echo. >%~dp0recowvery-exploit.log
+set CRYPTZIP=noverity-optcrypt.zip
+for %%i in (%ZIPS%\*crypt*.zip) do (set CRYPTZIP=%%i)
 
 :findadb
 
@@ -215,6 +223,18 @@ goto getlogs
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --flash
 goto getlogs
 
+:optcrypt
+%ADB% reboot recovery
+echo Flashing no-verity-opt-encrypt from recovery
+echo If necessary, please exit the decryption screen when TWRP finishes booting...
+%ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
+%ADB% push %CRYPTZIP% /cache/recovery/noverity-optcrypt.zip >>%~dp0recowvery-exploit.log 2>&1 && ^
+%ADB% shell twrp install /cache/recovery/noverity-optcrypt.zip && ^
+%ADB% shell twrp wipe cache && ^
+%ADB% reboot
+set OPTCRYPT=
+goto installedrec
+
 :restore
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh --stage1 --restore %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
@@ -222,10 +242,12 @@ goto getlogs
 goto getlogs
 
 :installedrec
+if "%OPTCRYPT%"=="true" goto optcrypt
 echo.
-echo All done! Would you like to download your boot and recovery backup images noW?
+echo All done! Would you like to download your boot and recovery backup images now?
 set /p response=^(Y/N^) %=%
 if /i "%response%"=="y" set GETBACKUPS=true
+goto getlogs
 
 :getlogs
 rem Pull whatever we managed to log
