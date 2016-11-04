@@ -1,0 +1,4 @@
+Put one no-verity-opt-encrypt ZIP and one Superuser ZIP in this folder for flashing.
+
+jcadduono's no-verity-opt-encrypt:  http://forum.xda-developers.com/v20/development/h918-recowvery-unlock-v20-root-shell-t3490594
+Chainfire's SuperSU:                http://forum.xda-developers.com/apps/supersu/2014-09-02-supersu-v2-05-t2868133

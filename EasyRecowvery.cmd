@@ -31,11 +31,13 @@ echo - Plug in only one device - this script does not support batch operations
 echo - Try to resist the urge to touch your phone, especially when the screen goes all weird
 echo.
 echo IF YOU JUST WANT TO GET TWRP RUNNING WITH NO OTHER MODIFICATIONS, USE OPTION 1
+echo TO INSTALL SUPERSU AFTER FLASHING TWRP, PLACE IT IN %ZIPS% AND USE OPTION 3
 echo.
 echo Please select from the following options:
 echo.
 echo 1) Run exploit and flash /sdcard/recovery.img ^(Leave selinux enforcing^)
 echo 2) Run exploit and flash /sdcard/recovery.img ^(Set selinux permissive^)
+echo 3) Install SuperSU ZIP from %ZIPS% ^(Requires TWRP^)
 echo 4) Restore stock boot and recovery from /sdcard/stock_*.img
 echo 5) Extras and Advanced Tools
 echo 0) Quit this script
@@ -136,8 +138,10 @@ echo.
 
 :findzips
 
+set SUZIP=supersu.zip
 set CRYPTZIP=noverity-optcrypt.zip
 for %%i in (%ZIPS%\*crypt*.zip) do (set CRYPTZIP=%%i)
+for %%i in (%ZIPS%\*super*.zip) do (set SUZIP=%%i)
 
 :findadb
 
@@ -305,6 +309,15 @@ echo If necessary, please exit the decryption screen when TWRP finishes booting.
 %ADB% reboot
 set OPTCRYPT=
 goto installedrec
+
+:supersu
+%ADB% reboot recovery
+echo If necessary, please exit the decryption screen when TWRP finishes booting...
+%ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
+%ADB% push %SUZIP% /cache/recovery/supersu.zip >>%~dprecowvery-exploit.log 2>&1 && ^
+%ADB% shell twrp install /cache/recovery/supersu.zip && ^
+%ADB% reboot
+goto getlogs
 
 :restore
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
