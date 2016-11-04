@@ -229,8 +229,6 @@ echo.
 echo - - - Launching Recowvery on device - - -
 echo.
 
-echo Mode: %mode%
-
 if "%mode%"=="1" goto exploit-normal
 if "%mode%"=="2" goto exploit-permissive
 if "%mode%"=="3" goto exploit-only
