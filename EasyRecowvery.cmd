@@ -176,6 +176,7 @@ if not exist %ADB% (
 )
 echo SUCCESS!
 echo adb.exe found at "%ADB%" >>%~dp0recowvery-exploit.log
+echo %ADB% version >>%~dp0recowvery-exploit.log
 
 :scan
 
