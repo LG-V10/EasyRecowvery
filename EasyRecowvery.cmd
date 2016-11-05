@@ -302,6 +302,11 @@ goto getlogs
 goto getlogs
 
 :optcrypt
+if not exist %CRYPTZIP% (
+    echo Failed to locate a suitable no-verity-opt-encrypt ZIP. Please flash it manually.
+    goto mainmenu
+)
+
 %ADB% reboot recovery
 echo Flashing no-verity-opt-encrypt from recovery
 echo If necessary, please exit the decryption screen when TWRP finishes booting...
@@ -314,6 +319,11 @@ set OPTCRYPT=
 goto installedrec
 
 :supersu
+if not exist %SUZIP% (
+    echo Failed to locate a suitable SuperSU ZIP. Please ensure you placed one in:
+    echo %ZIPS%
+    goto mainmenu
+)
 %ADB% reboot recovery
 echo If necessary, please exit the decryption screen when TWRP finishes booting...
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
