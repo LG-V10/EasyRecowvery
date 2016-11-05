@@ -239,6 +239,7 @@ echo SUCCESS!
 echo.
 echo Using device with serial %ANDROID_SERIAL%
 
+if "%mode%"=="5" goto supersu
 if "%mode%"=="6" goto getbackups
 goto push
 
