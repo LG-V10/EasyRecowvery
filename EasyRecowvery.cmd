@@ -5,7 +5,6 @@ set TARGET=/data/local/tmp
 set EXPLOITLOG=%~dp0recowvery-exploit.log
 set ADB=""
 set MODE=
-set GETBACKUPS=
 set OPTCRYPT=true
 set NOHASH=
 
@@ -143,6 +142,8 @@ if "%command%"=="7" (
 goto advmenu
 
 :start
+
+set GETBACKUPS=
 
 pause
 echo Starting in mode %mode% >%EXPLOITLOG%
