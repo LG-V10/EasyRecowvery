@@ -341,6 +341,10 @@ echo.
 %ADB% shell twrp install /cache/recovery/noverity-optcrypt.zip && ^
 %ADB% shell twrp wipe cache && ^
 %ADB% reboot
+echo.
+echo Booting back into system... please wait...
+%ADB% wait-for-device
+
 set OPTCRYPT=
 goto installedrec
 
@@ -368,6 +372,9 @@ echo.
 %ADB% push %SUZIP% /cache/recovery/su.zip >>%EXPLOITLOG% 2>&1 && ^
 %ADB% shell twrp install /cache/recovery/su.zip && ^
 %ADB% reboot
+echo.
+echo Booting back into system... please wait...
+%ADB% wait-for-device
 goto getlogs
 
 :restore
