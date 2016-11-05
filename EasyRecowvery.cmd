@@ -312,11 +312,14 @@ if not exist %CRYPTZIP% (
     goto mainmenu
 )
 echo Using %CRYPTZIP%
+echo.
 pause
 
 %ADB% reboot recovery
+echo.
 echo Rebooting to recovery to flash no-verity-opt-encrypt.
 echo If necessary, please exit the decryption screen when TWRP finishes booting...
+echo.
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
 %ADB% push %CRYPTZIP% /cache/recovery/noverity-optcrypt.zip >>%EXPLOITLOG% 2>&1 && ^
 %ADB% shell twrp install /cache/recovery/noverity-optcrypt.zip && ^
@@ -337,11 +340,14 @@ if not exist %SUZIP% (
     goto mainmenu
 )
 echo Using %SUZIP%
+echo.
 pause
 
 %ADB% reboot recovery
+echo.
 echo Rebooting to recovery to flash superuser.
 echo If necessary, please exit the decryption screen when TWRP finishes booting...
+echo.
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
 %ADB% push %SUZIP% /cache/recovery/su.zip >>%EXPLOITLOG% 2>&1 && ^
 %ADB% shell twrp install /cache/recovery/su.zip && ^
