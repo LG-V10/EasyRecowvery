@@ -12,7 +12,7 @@ IT IS NOT MY RESPONSIBILITY IF YOU END UP WITH A BRICK IN YOUR POCKET AFTER ATTE
 
 ## Features
 With this package, you can accomplish the following:
-- Install TWRP in just a couple of clicks
+- Install TWRP and root in just a couple of clicks
 - Optionally set selinux to Permissive mode
 - Back up and restore boot and recovery partitions
 - Get a root shell in Permissive mode without flashing anything

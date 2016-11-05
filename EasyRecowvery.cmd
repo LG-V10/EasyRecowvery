@@ -32,13 +32,13 @@ echo - Plug in only one device - this script does not support batch operations
 echo - Try to resist the urge to touch your phone, especially when the screen goes all weird
 echo.
 echo IF YOU JUST WANT TO GET TWRP RUNNING WITH NO OTHER MODIFICATIONS, USE OPTION 1
-echo TO INSTALL SUPERSU AFTER FLASHING TWRP, PLACE IT IN %ZIPS% AND USE OPTION 3
+echo TO ROOT AFTER FLASHING TWRP, PLACE A SUPERUSER ZIP IN THE "ZIPS" FOLDER AND USE OPTION 3
 echo.
 echo Please select from the following options:
 echo.
 echo 1) Run exploit and flash /sdcard/recovery.img ^(Leave selinux enforcing^)
 echo 2) Run exploit and flash /sdcard/recovery.img ^(Set selinux permissive^)
-echo 3) Install SuperSU ZIP from %ZIPS% ^(Requires TWRP^)
+echo 3) Install superuser ZIP from %ZIPS% ^(Requires TWRP^)
 echo 4) Restore stock boot and recovery from /sdcard/stock_*.img
 echo 5) Extras and Advanced Tools
 echo 0) Quit this script
@@ -61,7 +61,7 @@ if "%command%"=="2" (
 if "%command%"=="3" (
     set mode=5
     echo.
-    echo Running in SuperSU install mode
+    echo Running in superuser install mode
     goto start
 )
 if "%command%"=="4" (
@@ -241,7 +241,7 @@ echo SUCCESS!
 echo.
 echo Using device with serial %ANDROID_SERIAL%
 
-if "%mode%"=="5" goto supersu
+if "%mode%"=="5" goto superuser
 if "%mode%"=="6" goto getbackups
 goto push
 
@@ -325,14 +325,14 @@ echo If necessary, please exit the decryption screen when TWRP finishes booting.
 set OPTCRYPT=
 goto installedrec
 
-:supersu
+:superuser
 
 echo.
-echo - - - Flashing SuperSU - - -
+echo - - - Flashing Root - - -
 echo.
 
 if not exist %SUZIP% (
-    echo Failed to locate a suitable SuperSU ZIP. Please ensure you placed one in:
+    echo Failed to locate a suitable superuser ZIP. Please ensure you placed one in:
     echo %ZIPS%
     goto mainmenu
 )
@@ -340,11 +340,11 @@ echo Using %SUZIP%
 pause
 
 %ADB% reboot recovery
-echo Rebooting to recovery to flash SuperSU.
+echo Rebooting to recovery to flash superuser.
 echo If necessary, please exit the decryption screen when TWRP finishes booting...
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
-%ADB% push %SUZIP% /cache/recovery/supersu.zip >>%EXPLOITLOG% 2>&1 && ^
-%ADB% shell twrp install /cache/recovery/supersu.zip && ^
+%ADB% push %SUZIP% /cache/recovery/su.zip >>%EXPLOITLOG% 2>&1 && ^
+%ADB% shell twrp install /cache/recovery/su.zip && ^
 %ADB% reboot
 goto getlogs
 
@@ -390,7 +390,7 @@ echo.
     echo.
     echo - - - SAVED LOGS AND BACKUPS TO %cd%\ - - -
     echo.
-    echo Delete backup images from /sdcard/?
+    echo Delete backup images from internal storage?
     set response=""
     set /p response=^(Y/N^) %=%
     if /i "%response%"=="y" (
