@@ -267,7 +267,13 @@ echo Using device with serial %ANDROID_SERIAL%
 if "%mode%"=="5" goto superuser
 if "%mode%"=="6" goto getbackups
 if "%mode%"=="8" goto optcrypt
-if "%mode%"=="9" %ADB% reboot recovery
+if "%mode%"=="9" (
+    echo.
+    echo Rebooting to recovery... please wait...
+    %ADB% reboot recovery
+    pause
+    goto mainmenu
+)
 goto push
 
 :push
