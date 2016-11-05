@@ -181,9 +181,18 @@ if not exist %ADB% (
 )
 if not exist %ADB% (
     echo Failed to find adb.exe in Program Files >>%EXPLOITLOG%
+    set ADB=C:\Android\platform-tools\adb.exe
+)
+if not exist %ADB% (
+    echo Failed to find adb.exe in C:\Android >>%EXPLOITLOG%
     set ADB=C:\android-sdk\platform-tools\adb.exe
 )
 if not exist %ADB% (
+    echo Failed to find adb.exe in C:\android-sdk >>%EXPLOITLOG%
+    set ADB=C:\adb\platform-tools\adb.exe
+)
+if not exist %ADB% (
+    echo Failed to find adb.exe in C:\adb >>%EXPLOITLOG%
     echo FAILED!
     echo.
     echo Could not locate adb.exe. Please ensure that it is installed properly.
