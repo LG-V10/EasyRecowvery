@@ -2,6 +2,7 @@
 set SRC=%~dp0exploit
 set ZIPS=%~dp0zips
 set TARGET=/data/local/tmp
+set EXPLOITLOG=%~dp0recowvery-exploit.log
 set ADB=""
 set MODE=
 set GETBACKUPS=
@@ -130,7 +131,7 @@ goto advmenu
 :start
 
 pause
-echo Starting in mode %mode% >%~dp0recowvery-exploit.log
+echo Starting in mode %mode% >%EXPLOITLOG%
 
 echo.
 echo - - - Making sure we're good to go - - -
@@ -149,23 +150,23 @@ for %%i in (%ZIPS%\*super*.zip) do (set SUZIP=%%i)
 
 where /q adb && for /f "tokens=1" %%i in ('where adb') do set ADB=%%i
 if not exist %ADB% (
-    echo Failed to find adb.exe in %cd% or PATH >>%~dp0recowvery-exploit.log
+    echo Failed to find adb.exe in %cd% or PATH >>%EXPLOITLOG%
     set ADB=%ANDROID_HOME%\platform-tools\adb.exe
 )
 if not exist %ADB% (
-    echo Failed to find adb.exe in ANDROID_HOME >>%~dp0recowvery-exploit.log
+    echo Failed to find adb.exe in ANDROID_HOME >>%EXPLOITLOG%
     set ADB=%LOCALAPPDATA%\Android\sdk\platform-tools\adb.exe
 )
 if not exist %ADB% (
-    echo Failed to find adb.exe in AppData >>%~dp0recowvery-exploit.log
+    echo Failed to find adb.exe in AppData >>%EXPLOITLOG%
     set ADB=%ProgramFiles^(x86^)%\Android\android-sdk\platform-tools\adb.exe
 )
 if not exist %ADB% (
-    echo Failed to find adb.exe in Program Files ^(x86^) >>%~dp0recowvery-exploit.log
+    echo Failed to find adb.exe in Program Files ^(x86^) >>%EXPLOITLOG%
     set ADB=%PROGRAMFILES%\Android\android-sdk\platform-tools\adb.exe
 )
 if not exist %ADB% (
-    echo Failed to find adb.exe in Program Files >>%~dp0recowvery-exploit.log
+    echo Failed to find adb.exe in Program Files >>%EXPLOITLOG%
     set ADB=C:\android-sdk\platform-tools\adb.exe
 )
 if not exist %ADB% (
@@ -175,8 +176,8 @@ if not exist %ADB% (
     goto tomenu
 )
 echo SUCCESS!
-echo adb.exe found at "%ADB%" >>%~dp0recowvery-exploit.log
-echo %ADB% version >>%~dp0recowvery-exploit.log
+echo adb.exe found at "%ADB%" >>%EXPLOITLOG%
+echo %ADB% version >>%EXPLOITLOG%
 
 :scan
 
@@ -251,9 +252,9 @@ echo - - - Pushing exploit to %TARGET%/recowvery - - -
 echo.
 
 <nul set /p= Copying files...                                                
-echo Pushing exploit >>%~dp0recowvery-exploit.log
+echo Pushing exploit >>%EXPLOITLOG%
 %ADB% shell rm -rf %TARGET%/recowvery >nul
-%ADB% push %SRC% %TARGET%/recowvery >>%~dp0recowvery-exploit.log 2>&1
+%ADB% push %SRC% %TARGET%/recowvery >>%EXPLOITLOG% 2>&1
 %ADB% shell test -e %TARGET%/recowvery/recowvery.sh || (
     echo FAILED!
     echo.
@@ -305,7 +306,7 @@ goto getlogs
 echo Flashing no-verity-opt-encrypt from recovery
 echo If necessary, please exit the decryption screen when TWRP finishes booting...
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
-%ADB% push %CRYPTZIP% /cache/recovery/noverity-optcrypt.zip >>%~dp0recowvery-exploit.log 2>&1 && ^
+%ADB% push %CRYPTZIP% /cache/recovery/noverity-optcrypt.zip >>%EXPLOITLOG% 2>&1 && ^
 %ADB% shell twrp install /cache/recovery/noverity-optcrypt.zip && ^
 %ADB% shell twrp wipe cache && ^
 %ADB% reboot
@@ -316,7 +317,7 @@ goto installedrec
 %ADB% reboot recovery
 echo If necessary, please exit the decryption screen when TWRP finishes booting...
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
-%ADB% push %SUZIP% /cache/recovery/supersu.zip >>%~dp0recowvery-exploit.log 2>&1 && ^
+%ADB% push %SUZIP% /cache/recovery/supersu.zip >>%EXPLOITLOG% 2>&1 && ^
 %ADB% shell twrp install /cache/recovery/supersu.zip && ^
 %ADB% reboot
 goto getlogs
@@ -341,7 +342,7 @@ rem Pull whatever we managed to log
 %ADB% pull %TARGET%/recowvery/audit.log %~dp0recowvery-audit.log >nul 2>&1
 %ADB% pull %TARGET%/recowvery/shell.log %~dp0recowvery-shell.log >nul 2>&1
 %ADB% logcat -d > %~dp0recowvery-logcat.log 2>nul
-%ADB% shell cat %TARGET%/recowvery/recowvery.log 2>nul >>%~dp0recowvery-exploit.log
+%ADB% shell cat %TARGET%/recowvery/recowvery.log 2>nul >>%EXPLOITLOG%
 
 if "%GETBACKUPS%"=="true" goto getbackups
 
@@ -355,10 +356,10 @@ rem Grab any backups taken before the flash
 
 echo.
 <nul set /p= Downloading backups...                                          
-%ADB% pull /sdcard/stock_recovery.img %~dp0 2>nul >>%~dp0recowvery-exploit.log && ^
-%ADB% pull /sdcard/stock_recovery.img.sha1 %~dp0 2>nul >>%~dp0recowvery-exploit.log && ^
-%ADB% pull /sdcard/stock_boot.img %~dp0 2>nul >>%~dp0recowvery-exploit.log && ^
-%ADB% pull /sdcard/stock_boot.img.sha1 %~dp0 2>nul >>%~dp0recowvery-exploit.log && (
+%ADB% pull /sdcard/stock_recovery.img %~dp0 2>nul >>%EXPLOITLOG% && ^
+%ADB% pull /sdcard/stock_recovery.img.sha1 %~dp0 2>nul >>%EXPLOITLOG% && ^
+%ADB% pull /sdcard/stock_boot.img %~dp0 2>nul >>%EXPLOITLOG% && ^
+%ADB% pull /sdcard/stock_boot.img.sha1 %~dp0 2>nul >>%EXPLOITLOG% && (
     echo SUCCESS!
     echo.
     echo - - - SAVED LOGS AND BACKUPS TO %cd%\ - - -
