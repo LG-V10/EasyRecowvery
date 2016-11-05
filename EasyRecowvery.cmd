@@ -90,9 +90,11 @@ echo.
 echo 1) Run exploit and spawn a limited root shell ^(Be careful in there!^)
 echo 2) Flash only ^(For resuming after a successful exploit^)
 echo 3) Download boot and recovery backups from /sdcard/stock_*.img
-<nul set /p= 4) Toggle forced encryption after exploit ^(currently 
+echo 4) Install no-verity-opt-encrypt from the "zips" folder
+echo 5) Reboot to recovery
+<nul set /p= 6) Toggle forced encryption after exploit ^(currently 
 if "%OPTCRYPT%"=="true" (echo optional^)) else (echo forced^))
-<nul set /p= 5) Toggle integrity verification during exploit ^(currently 
+<nul set /p= 7) Toggle integrity verification during exploit ^(currently 
 if "%NOHASH%"=="--nohash" (echo disabled^)) else (echo enabled^))
 echo 0) Return to main menu
 echo.
@@ -118,10 +120,22 @@ if "%command%"=="3" (
     goto start
 )
 if "%command%"=="4" (
+    set mode=8
+    echo.
+    echo Running in no-verity-opt-encrypt install mode
+    goto start
+)
+if "%command%"=="5" (
+    set mode=9
+    echo.
+    echo Running in reboot to recovery mode
+    goto start
+)
+if "%command%"=="6" (
     if "%OPTCRYPT%"=="" (set OPTCRYPT=true) else (set OPTCRYPT=)
     goto advmenu
 )
-if "%command%"=="5" (
+if "%command%"=="7" (
     if "%NOHASH%"=="--nohash" (set NOHASH=) else (set NOHASH=--nohash)
     goto advmenu
 )
@@ -243,6 +257,8 @@ echo Using device with serial %ANDROID_SERIAL%
 
 if "%mode%"=="5" goto superuser
 if "%mode%"=="6" goto getbackups
+if "%mode%"=="8" goto optcrypt
+if "%mode%"=="9" %ADB% reboot recovery
 goto push
 
 :push
