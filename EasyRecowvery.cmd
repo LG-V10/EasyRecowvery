@@ -272,8 +272,7 @@ if "%mode%"=="9" (
     echo.
     echo Rebooting to recovery... please wait...
     %ADB% reboot recovery
-    pause
-    goto mainmenu
+    goto tomenu
 )
 goto push
 
@@ -310,7 +309,7 @@ if "%mode%"=="4" goto flash
 if "%mode%"=="7" goto restore
 
 echo Invalid mode... exiting to main menu.
-goto mainmenu
+goto tomenu
 
 :exploit-normal
 %ADB% shell sh %TARGET%/recowvery/recowvery.sh %NOHASH% && %ADB% wait-for-device 2>nul && %ADB% wait-for-device 2>nul && ^
@@ -372,7 +371,7 @@ echo.
 if not exist %SUZIP% (
     echo Failed to locate a suitable superuser ZIP. Please ensure you placed one in:
     echo %ZIPS%
-    goto mainmenu
+    goto tomenu
 )
 echo Using %SUZIP%
 echo.
