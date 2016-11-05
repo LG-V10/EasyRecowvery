@@ -340,8 +340,7 @@ echo - - - Flashing no-verity-opt-encrypt - - -
 echo.
 
 if not exist %CRYPTZIP% (
-    echo Failed to locate a suitable no-verity-opt-encrypt ZIP. Please flash it manually.
-    goto mainmenu
+    echo Failed to locate a suitable no-verity-opt-encrypt ZIP. Please flash it manually if desired.
 )
 echo Using %CRYPTZIP%
 echo.
