@@ -138,8 +138,8 @@ echo.
 
 :findzips
 
-set SUZIP=supersu.zip
 set CRYPTZIP=noverity-optcrypt.zip
+set SUZIP=supersu.zip
 for %%i in (%ZIPS%\*crypt*.zip) do (set CRYPTZIP=%%i)
 for %%i in (%ZIPS%\*super*.zip) do (set SUZIP=%%i)
 
@@ -316,7 +316,7 @@ goto installedrec
 %ADB% reboot recovery
 echo If necessary, please exit the decryption screen when TWRP finishes booting...
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
-%ADB% push %SUZIP% /cache/recovery/supersu.zip >>%~dprecowvery-exploit.log 2>&1 && ^
+%ADB% push %SUZIP% /cache/recovery/supersu.zip >>%~dp0recowvery-exploit.log 2>&1 && ^
 %ADB% shell twrp install /cache/recovery/supersu.zip && ^
 %ADB% reboot
 goto getlogs
