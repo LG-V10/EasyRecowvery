@@ -20,13 +20,16 @@ With this package, you can accomplish the following:
 
 ## Installation & Usage
 1. Download the ZIP from [GitHub](https://github.com/bziemek/EasyRecowvery/archive/master.zip) and extract it to a directory of your choosing
-2. Put the recovery of your choosing (i.e. [this one](https://build.nethunter.com/test-builds/twrp/lge/twrp-3.0.2-0-beta4-h918.img)) on your internal storage, and rename it to recovery.img
-3. Run EasyRecowvery.cmd and follow the prompts
-4. Profit!
+2. Put the recovery of your choosing (i.e. [this one](https://build.nethunter.com/test-builds/twrp/lge/twrp-3.0.2-0-beta12-h918.img)) on your internal storage, and rename it to recovery.img
+3. Put the latest no-verity-opt-encrypt.zip (i.e. [4.0](https://build.nethunter.com/android-tools/no-verity-opt-encrypt/no-verity-opt-encrypt-4.0.zip)) in the "zips" folder
+4. If you want to install SuperSU using this script, put that ZIP in the "zips" folder as well.
+5. Run EasyRecowvery.cmd and follow the prompts
+6. Profit!
 
 ## Tips:
 - If you're having ADB problems, try dragging "adb.exe", "AdbWinApi.dll", and "AdbWinUsbApi.dll" into the folder with EasyRecowvery.
 - You may want to Run as Administrator to avoid permission errors.
+- Sometimes things like this work better if you try them a second time, so I do recommend trying twice.
 - Please provide your log files and/or screenshots when reporting issues.
 
 ## Todo & Known Issues
