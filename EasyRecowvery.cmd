@@ -201,7 +201,7 @@ if not exist %ADB% (
 )
 echo SUCCESS!
 echo adb.exe found at "%ADB%" >>%EXPLOITLOG%
-echo %ADB% version >>%EXPLOITLOG%
+%ADB% version >>%EXPLOITLOG%
 
 :scan
 
