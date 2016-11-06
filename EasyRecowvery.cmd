@@ -237,8 +237,8 @@ for /f "tokens=1,2,3" %%i in ('%ADB% devices -l') do (
     if not "%%i"=="List" (
         if "%%j"=="unauthorized" (echo UNAUTHORIZED & goto modelcheck)
         set ANDROID_SERIAL=%%i
-        for /f "tokens=2 delims=:" %%n in ("%%j") do echo %%n
-        set MODEL=%%j
+        for /f "tokens=2 delims=:" %%n in ("%%k") do echo %%n
+        set MODEL=%%k
         goto modelcheck
     )
 )
