@@ -197,11 +197,13 @@ if not exist %ADB% (
     echo FAILED!
     echo.
     echo Could not locate adb.exe. Please ensure that it is installed properly.
+    pause
     goto tomenu
 )
 echo SUCCESS!
 echo adb.exe found at "%ADB%" >>%EXPLOITLOG%
-%ADB% version >>%EXPLOITLOG%
+echo Version info: >>%EXPLOITLOG%
+%ADB% version >>%EXPLOITLOG% 2>&1
 
 :scan
 
