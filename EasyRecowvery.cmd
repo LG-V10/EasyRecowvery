@@ -212,8 +212,9 @@ echo Version info: >>%EXPLOITLOG%
 %ADB% devices >nul 2>&1
 
 set ANDROID_SERIAL=""
-for /f "tokens=1,3" %%i in ('%ADB% devices -l') do (
+for /f "tokens=1,2,3" %%i in ('%ADB% devices -l') do (
     if not "%%i"=="List" (
+        if "%%j"=="unauthorized" (echo UNAUTHORIZED & goto modelcheck)
         set ANDROID_SERIAL=%%i
         for /f "tokens=2 delims=:" %%n in ("%%j") do echo %%n
         set MODEL=%%j
@@ -224,6 +225,7 @@ for /f "tokens=1,3" %%i in ('%ADB% devices -l') do (
 :modelcheck
 
 if %ANDROID_SERIAL%=="" (
+    echo.
     echo Failed to find your V20!
     echo.
     echo Did you remember to plug in the device?
@@ -232,6 +234,7 @@ if %ANDROID_SERIAL%=="" (
     echo.
     echo Press Ctrl-C to quit, or any other key to retry.
     pause
+    echo.
     goto scan
 )
 
@@ -239,7 +242,7 @@ set ADB=%ADB% -s %ANDROID_SERIAL%
 
 if "%MODEL%"=="product:elsa_tmo_us" goto unlockcheck
 
-echo %MODEL%
+if not "%MODEL%"=="" echo %MODEL%
 echo This device doesn't look like a T-mobile V20. Proceed anyway? ^(DANGEROUS!^)
 set response=""
 set /p response=^(Y/N^)
