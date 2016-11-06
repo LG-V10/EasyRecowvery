@@ -5,6 +5,7 @@ set TARGET=/data/local/tmp
 set EXPLOITLOG=%~dp0recowvery-exploit.log
 set ADB=""
 set MODE=
+set EXTADB=
 set OPTCRYPT=true
 set NOHASH=
 
@@ -95,6 +96,8 @@ echo 5) Reboot to recovery
 if "%OPTCRYPT%"=="true" (echo optional^)) else (echo forced^))
 <nul set /p= 7) Toggle integrity verification during exploit ^(currently 
 if "%NOHASH%"=="--nohash" (echo disabled^)) else (echo enabled^))
+<nul set /p= 8) Toggle using bundled adb.exe ^(currently 
+if "%EXTADB%"=="true" (echo external^)) else (echo bundled^))
 echo 0) Return to main menu
 echo.
 set /p command=^(0-5^) %=%
@@ -138,6 +141,10 @@ if "%command%"=="7" (
     if "%NOHASH%"=="--nohash" (set NOHASH=) else (set NOHASH=--nohash)
     goto advmenu
 )
+if "%command%"=="8" (
+    if "%EXTADB%"=="true" (set EXTADB=) else (set EXTADB=true)
+    goto advmenu
+)
 
 goto advmenu
 
@@ -159,9 +166,23 @@ set SUZIP=supersu.zip
 for %%i in (%ZIPS%\*crypt*.zip) do (set CRYPTZIP=%%i)
 for %%i in (%ZIPS%\*super*.zip) do (set SUZIP=%%i)
 
-:findadb
-
 <nul set /p= Locating adb.exe...                                             
+
+if not "%EXTADB%"=="true" (
+    rem <nul set /p= Using bundled adb.exe...
+    for /f "tokens=5" %%i in ('adb\adb.exe version') do (
+        if not "%%i"=="" (
+            if not "%%i"=="1.0.36" (
+                goto findadb
+            )
+        )
+    )
+    echo SUCCESS!
+    set ADB=adb\adb.exe
+    goto scan
+)
+
+:findadb
 
 where /q adb && for /f "tokens=1" %%i in ('where adb') do set ADB=%%i
 if not exist %ADB% (
