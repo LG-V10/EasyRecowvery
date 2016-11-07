@@ -276,17 +276,18 @@ goto scan
 set response=""
 
 <nul set /p= Checking unlock status...                                       
-for /f "tokens=1" %%i in ('%ADB% shell getprop ro.boot.flash.locked') do (
-    if not "%%i"=="0" (
-        echo FAILED!
-        echo.
-        echo Your device does not appear to be unlocked.
-        echo Please boot into fastboot mode and run:
-        echo fastboot oem unlock
-        echo From your computer, then try again.
-        echo http://i.imgur.com/2BhNatP.png
-        goto tomenu
-    )
+for /f "tokens=1 delims= " %%i in ('%ADB% shell getprop ro.boot.bl_unlock_complete') do (
+    set unlocked=%%i
+)
+if not "%unlocked%"=="true" (
+    echo FAILED!
+    echo.
+    echo Your device does not appear to be unlocked.
+    echo Please boot into fastboot mode and run:
+    echo fastboot oem unlock
+    echo From your computer, then try again.
+    echo http://i.imgur.com/2BhNatP.png
+    goto tomenu
 )
 echo SUCCESS!
 echo.
