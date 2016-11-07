@@ -1,7 +1,4 @@
 rsrc/
-adb/adb-recowvery.exe
-adb/AdbWinApi.dll
-adb/AdbWinUsbApi.dll
 *.log
 *.img*
 *.zip
