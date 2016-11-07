@@ -263,7 +263,7 @@ set ADB=%ADB% -s %ANDROID_SERIAL%
 
 if "%MODEL%"=="product:elsa_tmo_us" goto unlockcheck
 
-if not "%MODEL%"=="" echo %MODEL%
+echo.
 echo This device doesn't look like a T-mobile V20. Proceed anyway? ^(DANGEROUS!^)
 set response=""
 set /p response=^(Y/N^)
