@@ -11,6 +11,8 @@ set NOHASH=
 
 :mainmenu
 
+if "%OPTCRYPT%"=="installed" set OPTCRYPT=true
+
 cls
 set command=
 echo.
@@ -388,7 +390,7 @@ echo.
 echo Booting back into system... please wait...
 %ADB% wait-for-device
 
-set OPTCRYPT=
+set OPTCRYPT=installed
 goto installedrec
 
 :superuser
