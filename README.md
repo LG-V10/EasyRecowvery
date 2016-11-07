@@ -19,9 +19,9 @@ With this package, you can accomplish the following:
 - Much more to come!
 
 ## Installation & Usage
-1. Download the ZIP from [GitHub](https://github.com/bziemek/EasyRecowvery/archive/master.zip) and extract it to a directory of your choosing
-2. Put the recovery of your choosing (i.e. [this one](https://build.nethunter.com/test-builds/twrp/lge/twrp-3.0.2-0-beta12-h918.img)) on your internal storage, and rename it to recovery.img
-3. Put the latest no-verity-opt-encrypt.zip (i.e. [4.0](https://build.nethunter.com/android-tools/no-verity-opt-encrypt/no-verity-opt-encrypt-4.0.zip)) in the "zips" folder
+1. Download the latest ZIP from [GitHub](https://github.com/bziemek/EasyRecowvery/releases) and extract it to your Dekstop or the like
+2. Put the recovery of your choosing (i.e. [TWRP 3.0.2-0-rc8](https://build.nethunter.com/test-builds/twrp/lge/twrp-3.0.2-0-rc8-h918.img)) on your internal storage, and rename it to recovery.img
+3. Put the latest no-verity-opt-encrypt.zip (i.e. [4.1](https://build.nethunter.com/android-tools/no-verity-opt-encrypt/no-verity-opt-encrypt-4.1.zip)) in the "zips" folder
 4. If you want to install SuperSU using this script, put that ZIP in the "zips" folder as well.
 5. Run EasyRecowvery.cmd and follow the prompts
 6. Profit!
