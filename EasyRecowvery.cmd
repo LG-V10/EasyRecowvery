@@ -266,7 +266,7 @@ if "%MODEL%"=="product:elsa_tmo_us" goto unlockcheck
 echo.
 echo This device doesn't look like a T-mobile V20. Proceed anyway? ^(DANGEROUS!^)
 set response=""
-set /p response=^(Y/N^)
+set /p response=^(Y/N^) %=%
 if /i "%response%"=="n" goto tomenu
 if /i "%response%"=="y" goto unlockcheck
 goto scan
