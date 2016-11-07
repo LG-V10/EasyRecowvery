@@ -11,6 +11,8 @@ set NOHASH=
 
 :mainmenu
 
+if "%OPTCRYPT%"=="installed" set OPTCRYPT=true
+
 cls
 set command=
 echo.
@@ -20,7 +22,7 @@ echo ==                        https://github.com/bziemek/EasyRecowvery         
 echo ==----------------------------------------------------------------------------------------==
 echo ==                      Powered by jcadduono's Dirtycow root exploit                      ==
 echo ==                 https://github.com/jcadduono/android_external_dirtycow                 ==
-echo ================================================================================= 1.2b =====
+echo ================================================================================ 1.3b2 =====
 echo.
 echo Pre-flight checklist:
 echo - Install ADB, perferably with the Android SDK provided by Google (https://goo.gl/7ijkjp)
@@ -263,10 +265,10 @@ set ADB=%ADB% -s %ANDROID_SERIAL%
 
 if "%MODEL%"=="product:elsa_tmo_us" goto unlockcheck
 
-if not "%MODEL%"=="" echo %MODEL%
+echo.
 echo This device doesn't look like a T-mobile V20. Proceed anyway? ^(DANGEROUS!^)
 set response=""
-set /p response=^(Y/N^)
+set /p response=^(Y/N^) %=%
 if /i "%response%"=="n" goto tomenu
 if /i "%response%"=="y" goto unlockcheck
 goto scan
@@ -276,17 +278,18 @@ goto scan
 set response=""
 
 <nul set /p= Checking unlock status...                                       
-for /f "tokens=1" %%i in ('%ADB% shell getprop ro.boot.flash.locked') do (
-    if not "%%i"=="0" (
-        echo FAILED!
-        echo.
-        echo Your device does not appear to be unlocked.
-        echo Please boot into fastboot mode and run:
-        echo fastboot oem unlock
-        echo From your computer, then try again.
-        echo http://i.imgur.com/2BhNatP.png
-        goto tomenu
-    )
+for /f "tokens=1 delims= " %%i in ('%ADB% shell getprop ro.boot.bl_unlock_complete') do (
+    set unlocked=%%i
+)
+if not "%unlocked%"=="true" (
+    echo FAILED!
+    echo.
+    echo Your device does not appear to be unlocked.
+    echo Please boot into fastboot mode and run:
+    echo fastboot oem unlock
+    echo From your computer, then try again.
+    echo http://i.imgur.com/2BhNatP.png
+    goto tomenu
 )
 echo SUCCESS!
 echo.
@@ -375,8 +378,9 @@ pause
 %ADB% reboot recovery
 echo.
 echo Rebooting to recovery to flash no-verity-opt-encrypt.
-echo If necessary, please exit the decryption screen when TWRP finishes booting...
+echo If necessary, please exit the decryption screen when TWRP finishes booting, then continue.
 echo.
+pause
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
 %ADB% push %CRYPTZIP% /cache/recovery/noverity-optcrypt.zip >>%EXPLOITLOG% 2>&1 && ^
 %ADB% shell twrp install /cache/recovery/noverity-optcrypt.zip && ^
@@ -386,7 +390,7 @@ echo.
 echo Booting back into system... please wait...
 %ADB% wait-for-device
 
-set OPTCRYPT=
+set OPTCRYPT=installed
 goto installedrec
 
 :superuser
@@ -407,8 +411,9 @@ pause
 %ADB% reboot recovery
 echo.
 echo Rebooting to recovery to flash superuser.
-echo If necessary, please exit the decryption screen when TWRP finishes booting...
+echo If necessary, please exit the decryption screen when TWRP finishes booting, then continue.
 echo.
+pause
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
 %ADB% push %SUZIP% /cache/recovery/su.zip >>%EXPLOITLOG% 2>&1 && ^
 %ADB% shell twrp install /cache/recovery/su.zip && ^
