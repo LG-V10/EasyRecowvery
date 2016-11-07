@@ -3,6 +3,7 @@ set SRC=%~dp0exploit
 set ZIPS=%~dp0zips
 set TARGET=/data/local/tmp
 set EXPLOITLOG=%~dp0recowvery-exploit.log
+set FLASHLOG=%~dp0recowvery-flash.log
 set ADB=""
 set MODE=
 set EXTADB=
@@ -155,6 +156,7 @@ goto advmenu
 set GETBACKUPS=
 
 pause
+echo. >%FLASHLOG%
 echo Starting in mode %mode% >%EXPLOITLOG%
 
 echo.
@@ -382,7 +384,7 @@ echo If necessary, please exit the decryption screen when TWRP finishes booting,
 echo.
 pause
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
-%ADB% push %CRYPTZIP% /cache/recovery/noverity-optcrypt.zip >>%EXPLOITLOG% 2>&1 && ^
+%ADB% push %CRYPTZIP% /cache/recovery/noverity-optcrypt.zip >>%FLASHLOG% 2>&1 && ^
 %ADB% shell twrp install /cache/recovery/noverity-optcrypt.zip && ^
 %ADB% shell twrp wipe cache && ^
 %ADB% reboot
@@ -415,7 +417,7 @@ echo If necessary, please exit the decryption screen when TWRP finishes booting,
 echo.
 pause
 %ADB% wait-for-recovery 2>nul && %ADB% wait-for-recovery 2>nul
-%ADB% push %SUZIP% /cache/recovery/su.zip >>%EXPLOITLOG% 2>&1 && ^
+%ADB% push %SUZIP% /cache/recovery/su.zip >>%FLASHLOG% 2>&1 && ^
 %ADB% shell twrp install /cache/recovery/su.zip && ^
 %ADB% reboot
 echo.
