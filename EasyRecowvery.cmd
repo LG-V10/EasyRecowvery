@@ -174,7 +174,7 @@ for %%i in (%ZIPS%\*super*.zip) do (set SUZIP=%%i)
 
 if not "%EXTADB%"=="true" (
     rem <nul set /p= Using bundled adb.exe...
-    for /f "tokens=5" %%i in ('adb\adb.exe version') do (
+    for /f "tokens=5" %%i in ('adb\adb-recowvery.exe version') do (
         if not "%%i"=="" (
             if not "%%i"=="1.0.36" (
                 goto findadb
@@ -182,7 +182,7 @@ if not "%EXTADB%"=="true" (
         )
     )
     echo SUCCESS!
-    set ADB=adb\adb.exe
+    set ADB=adb\adb-recowvery.exe
     goto scan
 )
 
