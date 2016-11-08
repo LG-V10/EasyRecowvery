@@ -166,6 +166,18 @@ echo.
 
 :checksrc
 
+<nul set /p= Checking permissions in the EasyRecowvery directory...
+
+copy /y NUL %~dp0tmp >NUL 2>&1 || (
+    echo FAILED!
+    echo.
+    echo We don't have permission to create log or backup files in
+    echo %~dp0!
+    echo Please extract EasyRecowvery to a different directory, then try again.
+    goto tomenu
+)
+del %~dp0tmp
+
 <nul set /p= Checking that the exploit files exist...
 
 if exist "exploit\" ^
