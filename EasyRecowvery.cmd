@@ -33,6 +33,7 @@ echo - Place the latest no-verity-opt-encrypt-*.zip in %ZIPS%
 echo - Upload your desired recovery to /sdcard/recovery.img
 echo - Plug in only one device - this script does not support batch operations
 echo - Try to resist the urge to touch your phone, especially when the screen goes all weird
+echo - FORMAT DATA the first time you enter TWRP! This is NEEDED to remove the default encryption
 echo.
 echo IF YOU JUST WANT TO GET TWRP RUNNING WITH NO OTHER MODIFICATIONS, USE OPTION 1
 echo TO ROOT AFTER FLASHING TWRP, PLACE A SUPERUSER ZIP IN THE "ZIPS" FOLDER AND USE OPTION 3
