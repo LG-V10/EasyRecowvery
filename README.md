@@ -27,10 +27,12 @@ With this package, you can accomplish the following:
 6. Profit!
 
 ## Tips:
+- In 99% of cases, you will need to run Format Data the first time you enter TWRP. This will erase everything on your Internal Storage!
 - If you're having ADB problems, try dragging "adb.exe", "AdbWinApi.dll", and "AdbWinUsbApi.dll" into the folder with EasyRecowvery.
-- You may want to Run as Administrator to avoid permission errors.
+- You may want to Run as Administrator if you encounter permission errors.
 - Sometimes things like this work better if you try them a second time, so I do recommend trying twice.
 - Please provide your log files and/or screenshots when reporting issues.
+- If you end up in a bootloop and are using TWRP > 3.0.2.0-beta5, you can enter recovery by using the factory reset hardware key combo.
 
 ## Todo & Known Issues
 Host script can't tell if the flash failed. A check for this is under development.
