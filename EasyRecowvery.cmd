@@ -23,7 +23,7 @@ echo ==                        https://github.com/bziemek/EasyRecowvery         
 echo ==----------------------------------------------------------------------------------------==
 echo ==                      Powered by jcadduono's Dirtycow root exploit                      ==
 echo ==                 https://github.com/jcadduono/android_external_dirtycow                 ==
-echo ================================================================================ 1.3b2 =====
+echo ================================================================================ 1.3b3 =====
 echo.
 echo Pre-flight checklist:
 echo - Install ADB, perferably with the Android SDK provided by Google (https://goo.gl/7ijkjp)
