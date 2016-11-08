@@ -23,7 +23,7 @@ echo ==                        https://github.com/bziemek/EasyRecowvery         
 echo ==----------------------------------------------------------------------------------------==
 echo ==                      Powered by jcadduono's Dirtycow root exploit                      ==
 echo ==                 https://github.com/jcadduono/android_external_dirtycow                 ==
-echo ================================================================================ 1.3b2 =====
+echo ================================================================================ 1.3b3 =====
 echo.
 echo Pre-flight checklist:
 echo - Install ADB, perferably with the Android SDK provided by Google (https://goo.gl/7ijkjp)
@@ -33,6 +33,7 @@ echo - Place the latest no-verity-opt-encrypt-*.zip in %ZIPS%
 echo - Upload your desired recovery to /sdcard/recovery.img
 echo - Plug in only one device - this script does not support batch operations
 echo - Try to resist the urge to touch your phone, especially when the screen goes all weird
+echo - FORMAT DATA the first time you enter TWRP! This is NEEDED to remove the default encryption
 echo.
 echo IF YOU JUST WANT TO GET TWRP RUNNING WITH NO OTHER MODIFICATIONS, USE OPTION 1
 echo TO ROOT AFTER FLASHING TWRP, PLACE A SUPERUSER ZIP IN THE "ZIPS" FOLDER AND USE OPTION 3
@@ -162,6 +163,37 @@ echo Starting in mode %mode% >%EXPLOITLOG%
 echo.
 echo - - - Making sure we're good to go - - -
 echo.
+
+:checksrc
+
+<nul set /p= Checking permissions in the EasyRecowvery directory...
+
+copy /y NUL %~dp0tmp >NUL 2>&1 || (
+    echo FAILED!
+    echo.
+    echo We don't have permission to create log or backup files in
+    echo %~dp0!
+    echo Please extract EasyRecowvery to a different directory, then try again.
+    goto tomenu
+)
+del %~dp0tmp
+
+<nul set /p= Checking that the exploit files exist...
+
+if exist "exploit\" ^
+if exist "exploit\recowvery.sh" ^
+if exist "exploit\dirtycow" ^
+if exist "exploit\recowvery-app_process64" ^
+if exist "exploit\recowvery-applypatch" ^
+if exist "exploit\recowvery-run-as" (
+    echo SUCCESS!
+    goto findzips
+)
+echo FAILED!
+echo.
+echo You seem to be missing one or more files in the "exploit" directory.
+echo Please download and extract a fresh copy of EasyRecowvery, then try again.
+goto tomenu
 
 :findzips
 
