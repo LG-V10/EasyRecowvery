@@ -164,6 +164,25 @@ echo.
 echo - - - Making sure we're good to go - - -
 echo.
 
+:checksrc
+
+<nul set /p= Checking that the exploit files exist...
+
+if exist "exploit\" ^
+if exist "exploit\recowvery.sh" ^
+if exist "exploit\dirtycow" ^
+if exist "exploit\recowvery-app_process64" ^
+if exist "exploit\recowvery-applypatch" ^
+if exist "exploit\recowvery-run-as" (
+    echo SUCCESS!
+    goto findzips
+)
+echo FAILED!
+echo.
+echo You seem to be missing one or more files in the "exploit" directory.
+echo Please download and extract a fresh copy of EasyRecowvery, then try again.
+goto tomenu
+
 :findzips
 
 set CRYPTZIP=noverity-optcrypt.zip
